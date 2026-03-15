@@ -1,0 +1,443 @@
+[
+  {
+    "model": "froms.module",
+    "pk": 1,
+    "fields": {
+      "name": "Analyse mathématique 2",
+      "level": "1CP",
+      "semester": "S2"
+    }
+  },
+  {
+    "model": "froms.module",
+    "pk": 2,
+    "fields": {
+      "name": "Mécanique du point",
+      "level": "1CP",
+      "semester": "S2"
+    }
+  },
+  {
+    "model": "froms.module",
+    "pk": 3,
+    "fields": {
+      "name": "Algebre 2",
+      "level": "1CP",
+      "semester": "S2"
+    }
+  },
+  {
+    "model": "froms.module",
+    "pk": 4,
+    "fields": {
+      "name": "Algorithmique et structures de données dynamiques",
+      "level": "1CP",
+      "semester": "S2"
+    }
+  },
+  {
+    "model": "froms.module",
+    "pk": 5,
+    "fields": {
+      "name": "English 2",
+      "level": "1CP",
+      "semester": "S2"
+    }
+  },
+  {
+    "model": "froms.module",
+    "pk": 6,
+    "fields": {
+      "name": "Electronique fondamentale 1",
+      "level": "1CP",
+      "semester": "S2"
+    }
+  },
+  {
+    "model": "froms.module",
+    "pk": 7,
+    "fields": {
+      "name": "Introduction au Système d_exploitation 2",
+      "level": "1CP",
+      "semester": "S2"
+    }
+  },
+  {
+    "model": "froms.module",
+    "pk": 8,
+    "fields": {
+      "name": "RX1",
+      "level": "1CS",
+      "semester": "S1"
+    }
+  },
+  {
+    "model": "froms.module",
+    "pk": 9,
+    "fields": {
+      "name": "BDD",
+      "level": "1CS",
+      "semester": "S1"
+    }
+  },
+  {
+    "model": "froms.module",
+    "pk": 10,
+    "fields": {
+      "name": "RO1",
+      "level": "1CS",
+      "semester": "S1"
+    }
+  },
+  {
+    "model": "froms.module",
+    "pk": 11,
+    "fields": {
+      "name": "SE",
+      "level": "1CS",
+      "semester": "S1"
+    }
+  },
+  {
+    "model": "froms.module",
+    "pk": 12,
+    "fields": {
+      "name": "PAFA",
+      "level": "1CS",
+      "semester": "S1"
+    }
+  },
+  {
+    "model": "froms.module",
+    "pk": 13,
+    "fields": {
+      "name": "ANG",
+      "level": "1CS",
+      "semester": "S1"
+    }
+  },
+  {
+    "model": "froms.module",
+    "pk": 14,
+    "fields": {
+      "name": "ThL",
+      "level": "1CS",
+      "semester": "S1"
+    }
+  },
+  {
+    "model": "froms.module",
+    "pk": 15,
+    "fields": {
+      "name": "GL",
+      "level": "1CS",
+      "semester": "S1"
+    }
+  },
+  {
+    "model": "froms.module",
+    "pk": 16,
+    "fields": {
+      "name": "MF",
+      "level": "1CS",
+      "semester": "S2"
+    }
+  },
+  {
+    "model": "froms.module",
+    "pk": 17,
+    "fields": {
+      "name": "ANUM",
+      "level": "1CS",
+      "semester": "S2"
+    }
+  },
+  {
+    "model": "froms.module",
+    "pk": 18,
+    "fields": {
+      "name": "Entreprenariat",
+      "level": "1CS",
+      "semester": "S2"
+    }
+  },
+  {
+    "model": "froms.module",
+    "pk": 19,
+    "fields": {
+      "name": "SEC",
+      "level": "1CS",
+      "semester": "S2"
+    }
+  },
+  {
+    "model": "froms.module",
+    "pk": 20,
+    "fields": {
+      "name": "RX2",
+      "level": "1CS",
+      "semester": "S2"
+    }
+  },
+  {
+    "model": "froms.module",
+    "pk": 21,
+    "fields": {
+      "name": "IA",
+      "level": "1CS",
+      "semester": "S2"
+    }
+  },
+  {
+    "model": "froms.module",
+    "pk": 22,
+    "fields": {
+      "name": "ADCI",
+      "level": "1CS",
+      "semester": "S2"
+    }
+  },
+  {
+    "model": "froms.module",
+    "pk": 23,
+    "fields": {
+      "name": "RO2",
+      "level": "1CS",
+      "semester": "S2"
+    }
+  },
+  {
+    "model": "froms.module",
+    "pk": 24,
+    "fields": {
+      "name": "économie",
+      "level": "2CP",
+      "semester": "S1"
+    }
+  },
+  {
+    "model": "froms.module",
+    "pk": 25,
+    "fields": {
+      "name": "Structure Fichiers et Structure de Données",
+      "level": "2CP",
+      "semester": "S1"
+    }
+  },
+  {
+    "model": "froms.module",
+    "pk": 26,
+    "fields": {
+      "name": "Algebra 3",
+      "level": "2CP",
+      "semester": "S1"
+    }
+  },
+  {
+    "model": "froms.module",
+    "pk": 27,
+    "fields": {
+      "name": "Analyse Mathématique 3",
+      "level": "2CP",
+      "semester": "S1"
+    }
+  },
+  {
+    "model": "froms.module",
+    "pk": 28,
+    "fields": {
+      "name": "Probabilités et Statistiques 1",
+      "level": "2CP",
+      "semester": "S1"
+    }
+  },
+  {
+    "model": "froms.module",
+    "pk": 29,
+    "fields": {
+      "name": "Electronique Fondamentale 2",
+      "level": "2CP",
+      "semester": "S1"
+    }
+  },
+  {
+    "model": "froms.module",
+    "pk": 30,
+    "fields": {
+      "name": "Architecture des Ordinateurs 2",
+      "level": "2CP",
+      "semester": "S1"
+    }
+  },
+  {
+    "model": "froms.module",
+    "pk": 31,
+    "fields": {
+      "name": "Projet Pluridisciplinaire",
+      "level": "2CP",
+      "semester": "S2"
+    }
+  },
+  {
+    "model": "froms.module",
+    "pk": 32,
+    "fields": {
+      "name": "Probabilités et Statistiques 2",
+      "level": "2CP",
+      "semester": "S2"
+    }
+  },
+  {
+    "model": "froms.module",
+    "pk": 33,
+    "fields": {
+      "name": "Logique Mathématique",
+      "level": "2CP",
+      "semester": "S2"
+    }
+  },
+  {
+    "model": "froms.module",
+    "pk": 34,
+    "fields": {
+      "name": "Programmation Orientée Objet (POO,OOP)",
+      "level": "2CP",
+      "semester": "S2"
+    }
+  },
+  {
+    "model": "froms.module",
+    "pk": 35,
+    "fields": {
+      "name": "Introduction aux systèmes d_information",
+      "level": "2CP",
+      "semester": "S2"
+    }
+  },
+  {
+    "model": "froms.module",
+    "pk": 36,
+    "fields": {
+      "name": "Analyse Mathématique 4",
+      "level": "2CP",
+      "semester": "S2"
+    }
+  },
+  {
+    "model": "froms.module",
+    "pk": 37,
+    "fields": {
+      "name": "Optique et Ondes électromagnétiques",
+      "level": "2CP",
+      "semester": "S2"
+    }
+  },
+  {
+    "model": "froms.module",
+    "pk": 38,
+    "fields": {
+      "name": "EN",
+      "level": "2CS",
+      "semester": "S1"
+    }
+  },
+  {
+    "model": "froms.module",
+    "pk": 39,
+    "fields": {
+      "name": "ANAD",
+      "level": "2CS",
+      "semester": "S1"
+    }
+  },
+  {
+    "model": "froms.module",
+    "pk": 40,
+    "fields": {
+      "name": "DS",
+      "level": "2CS",
+      "semester": "S1"
+    }
+  },
+  {
+    "model": "froms.module",
+    "pk": 41,
+    "fields": {
+      "name": "Complexité",
+      "level": "2CS",
+      "semester": "S1"
+    }
+  },
+  {
+    "model": "froms.module",
+    "pk": 42,
+    "fields": {
+      "name": "Cloud",
+      "level": "2CS",
+      "semester": "S1"
+    }
+  },
+  {
+    "model": "froms.module",
+    "pk": 43,
+    "fields": {
+      "name": "GL",
+      "level": "2CS",
+      "semester": "S1"
+    }
+  },
+  {
+    "model": "froms.module",
+    "pk": 44,
+    "fields": {
+      "name": "Projet",
+      "level": "2CS",
+      "semester": "S1"
+    }
+  },
+  {
+    "model": "froms.module",
+    "pk": 45,
+    "fields": {
+      "name": "BDDA",
+      "level": "2CS",
+      "semester": "S1"
+    }
+  },
+  {
+    "model": "froms.module",
+    "pk": 46,
+    "fields": {
+      "name": "S2(CS)",
+      "level": "2CS",
+      "semester": "S2"
+    }
+  },
+  {
+    "model": "froms.module",
+    "pk": 47,
+    "fields": {
+      "name": "S2(IA)",
+      "level": "2CS",
+      "semester": "S2"
+    }
+  },
+  {
+    "model": "froms.module",
+    "pk": 48,
+    "fields": {
+      "name": "S1(CS)",
+      "level": "3CS",
+      "semester": "S1"
+    }
+  },
+  {
+    "model": "froms.module",
+    "pk": 49,
+    "fields": {
+      "name": "S1(IA)",
+      "level": "3CS",
+      "semester": "S1"
+    }
+  }
+]

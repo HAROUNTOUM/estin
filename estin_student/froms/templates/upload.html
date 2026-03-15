@@ -1,0 +1,314 @@
+{% extends "base.html" %}
+
+{% block title %}Upload Resource — ESTIN Hub{% endblock %}
+
+{% block extra_head %}
+<style>
+  /* ── Wizard Steps ── */
+  .wizard-steps {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-bottom: 2.5rem;
+  }
+  .wizard-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    flex: 1;
+    position: relative;
+  }
+  .wizard-step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 60%;
+    width: 80%;
+    height: 2px;
+    background: var(--border);
+  }
+  .wizard-step.active:not(:last-child)::after,
+  .wizard-step.done:not(:last-child)::after {
+    background: var(--orange);
+  }
+  .step-circle {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: var(--surface2);
+    border: 2px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 0.9rem;
+    color: var(--text-muted);
+    transition: all 0.3s;
+    position: relative; z-index: 1;
+  }
+  .wizard-step.active .step-circle {
+    background: var(--orange);
+    border-color: var(--orange);
+    color: white;
+  }
+  .wizard-step.done .step-circle {
+    background: var(--orange-light);
+    border-color: var(--orange);
+    color: var(--orange);
+  }
+  .step-label { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; }
+  .step-sublabel { font-size: 0.7rem; color: var(--text-muted); opacity: 0.7; }
+  .wizard-step.active .step-label { color: var(--orange); }
+
+  /* ── Form Panels ── */
+  .wizard-panel { display: none; }
+  .wizard-panel.active { display: block; animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ── File Drop Zone ── */
+  .drop-zone {
+    border: 2px dashed var(--border);
+    border-radius: 12px;
+    padding: 3rem 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.25s;
+    background: var(--surface2);
+  }
+  .drop-zone:hover, .drop-zone.dragover {
+    border-color: var(--orange);
+    background: var(--orange-faint);
+  }
+  .drop-zone svg { color: var(--orange); margin-bottom: 1rem; }
+  .drop-zone h4 { margin: 0 0 6px; font-size: 1rem; }
+  .drop-zone p  { margin: 0; font-size: 0.85rem; color: var(--text-muted); }
+  .drop-zone input[type=file] { display: none; }
+  .file-chosen { margin-top: 1rem; padding: 0.6rem 1rem; background: var(--orange-light); border-radius: 8px; font-size: 0.85rem; color: var(--orange); display: none; }
+
+  /* ── Wizard Nav ── */
+  .wizard-nav {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border);
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="upload-page">
+  <div class="page-header centered">
+    <h1>Upload Resource</h1>
+    <p class="subtitle">Share your knowledge with the ESTIN community</p>
+  </div>
+
+  <div class="upload-card">
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert--{{ message.tags }}">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+
+    <!-- Wizard Steps Indicator -->
+    <div class="wizard-steps" id="wizard-steps">
+      <div class="wizard-step active" data-step="1">
+        <div class="step-circle">1</div>
+        <span class="step-label">Categorize</span>
+        <span class="step-sublabel">Level & module</span>
+      </div>
+      <div class="wizard-step" data-step="2">
+        <div class="step-circle">2</div>
+        <span class="step-label">Content</span>
+        <span class="step-sublabel">Title & details</span>
+      </div>
+      <div class="wizard-step" data-step="3">
+        <div class="step-circle">3</div>
+        <span class="step-label">Transfer</span>
+        <span class="step-sublabel">Upload file</span>
+      </div>
+    </div>
+
+    <form method="POST" enctype="multipart/form-data" id="upload-form" novalidate>
+      {% csrf_token %}
+
+      <!-- Hidden fields so all data is submitted together -->
+      <input type="hidden" name="level"    id="hidden-level">
+      <input type="hidden" name="semester" id="hidden-semester">
+
+      <!-- ── Step 1: Categorize ── -->
+      <div class="wizard-panel active" id="panel-1">
+        <div class="form-group">
+          <label class="form-label">Level <span class="required">*</span></label>
+          {{ form.level }}
+        </div>
+        <div class="form-group">
+          <label class="form-label">Semester <span class="required">*</span></label>
+          {{ form.semester }}
+        </div>
+        <div class="form-group">
+          <label class="form-label">Module <span class="required">*</span></label>
+          {{ form.module }}
+          <span class="form-hint" id="module-hint">Select a level and semester first</span>
+        </div>
+      </div>
+
+      <!-- ── Step 2: Content ── -->
+      <div class="wizard-panel" id="panel-2">
+        <div class="form-group">
+          <label class="form-label">Resource Title <span class="required">*</span></label>
+          {{ form.title }}
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Resource Type <span class="required">*</span></label>
+            {{ form.resource_type }}
+          </div>
+          <div class="form-group">
+            <label class="form-label">Academic Year <span class="required">*</span></label>
+            {{ form.academic_year }}
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Step 3: Transfer ── -->
+      <div class="wizard-panel" id="panel-3">
+        <label class="drop-zone" id="drop-zone" for="file-upload">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="48" height="48">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          <h4>Drop your file here</h4>
+          <p>PDF, Word, PowerPoint, or ZIP — max 50MB</p>
+          {{ form.file }}
+          <div class="file-chosen" id="file-chosen-label"></div>
+        </label>
+        {% if form.file.errors %}
+          <span class="form-error">{{ form.file.errors.0 }}</span>
+        {% endif %}
+      </div>
+
+      <!-- Wizard Navigation -->
+      <div class="wizard-nav">
+        <button type="button" class="btn-secondary" id="btn-prev" style="visibility:hidden">← Back</button>
+        <span class="step-counter" id="step-counter">Step 1 of 3</span>
+        <button type="button" class="btn-primary" id="btn-next">Next →</button>
+        <button type="submit" class="btn-primary btn-submit" id="btn-submit" style="display:none">
+          Upload Resource
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+(function () {
+  const AJAX_URL = "{% url 'resources:ajax_modules' %}";
+  let currentStep = 1;
+  const totalSteps = 3;
+
+  const panels   = document.querySelectorAll('.wizard-panel');
+  const steps    = document.querySelectorAll('.wizard-step');
+  const btnPrev  = document.getElementById('btn-prev');
+  const btnNext  = document.getElementById('btn-next');
+  const btnSubmit = document.getElementById('btn-submit');
+  const counter  = document.getElementById('step-counter');
+
+  function showStep(n) {
+    panels.forEach((p, i) => p.classList.toggle('active', i === n - 1));
+    steps.forEach((s, i) => {
+      s.classList.toggle('active', i === n - 1);
+      s.classList.toggle('done',   i < n - 1);
+    });
+    btnPrev.style.visibility = n === 1 ? 'hidden' : 'visible';
+    btnNext.style.display    = n === totalSteps ? 'none' : 'inline-flex';
+    btnSubmit.style.display  = n === totalSteps ? 'inline-flex' : 'none';
+    counter.textContent = `Step ${n} of ${totalSteps}`;
+    currentStep = n;
+  }
+
+  function validateStep(n) {
+    if (n === 1) {
+      const level    = document.getElementById('id_level').value;
+      const semester = document.getElementById('id_semester').value;
+      const module   = document.getElementById('id_module').value;
+      if (!level)    { alert('Please select a level.');    return false; }
+      if (!semester) { alert('Please select a semester.'); return false; }
+      if (!module)   { alert('Please select a module.');   return false; }
+      // Sync hidden fields for form submission
+      document.getElementById('hidden-level').value    = level;
+      document.getElementById('hidden-semester').value = semester;
+    }
+    if (n === 2) {
+      const title = document.querySelector('[name=title]').value.trim();
+      const type  = document.querySelector('[name=resource_type]').value;
+      const year  = document.querySelector('[name=academic_year]').value;
+      if (!title) { alert('Please enter a resource title.'); return false; }
+      if (!type)  { alert('Please select a resource type.'); return false; }
+      if (!year)  { alert('Please enter an academic year.'); return false; }
+    }
+    return true;
+  }
+
+  btnNext.addEventListener('click', () => {
+    if (validateStep(currentStep)) showStep(currentStep + 1);
+  });
+  btnPrev.addEventListener('click', () => {
+    if (currentStep > 1) showStep(currentStep - 1);
+  });
+
+  // ── Dynamic module loading ──
+  function loadModules() {
+    const level    = document.getElementById('id_level').value;
+    const semester = document.getElementById('id_semester').value;
+    const select   = document.getElementById('id_module');
+    const hint     = document.getElementById('module-hint');
+
+    if (!level || !semester) {
+      select.innerHTML = '<option value="">Select level & semester first</option>';
+      select.disabled  = true;
+      hint.textContent = 'Select a level and semester first';
+      return;
+    }
+
+    hint.textContent = 'Loading modules...';
+    fetch(`${AJAX_URL}?level=${level}&semester=${semester}`)
+      .then(r => r.json())
+      .then(modules => {
+        select.innerHTML = '<option value="">Select a module</option>';
+        modules.forEach(m => {
+          const opt = document.createElement('option');
+          opt.value = m.id;
+          opt.textContent = m.name;
+          select.appendChild(opt);
+        });
+        select.disabled  = false;
+        hint.textContent = `${modules.length} module(s) available`;
+      })
+      .catch(() => { hint.textContent = 'Failed to load modules.'; });
+  }
+
+  document.getElementById('id_level').addEventListener('change', loadModules);
+  document.getElementById('id_semester').addEventListener('change', loadModules);
+
+  // ── File drop zone ──
+  const dropZone = document.getElementById('drop-zone');
+  const fileInput = document.getElementById('file-upload');
+  const fileLabel = document.getElementById('file-chosen-label');
+
+  function showFileName(name) {
+    fileLabel.textContent = `✓ ${name}`;
+    fileLabel.style.display = 'block';
+  }
+
+  fileInput.addEventListener('change', () => {
+    if (fileInput.files[0]) showFileName(fileInput.files[0].name);
+  });
+  dropZone.addEventListener('dragover',  e => { e.preventDefault(); dropZone.classList.add('dragover'); });
+  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+  dropZone.addEventListener('drop', e => {
+    e.preventDefault();
+    dropZone.classList.remove('dragover');
+    const files = e.dataTransfer.files;
+    if (files[0]) {
+      fileInput.files = files;
+      showFileName(files[0].name);
+    }
+  });
+})();
+</script>
+{% endblock %}

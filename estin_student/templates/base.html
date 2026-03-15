@@ -1,0 +1,370 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}ESTIN Resource Hub{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  {% block extra_head %}{% endblock %}
+  <style>
+    /* ════════════════════════════════════════
+       DESIGN TOKENS
+    ════════════════════════════════════════ */
+    :root {
+      --bg:           #0f1117;
+      --surface:      #161b27;
+      --surface2:     #1e2535;
+      --border:       #2a3144;
+      --orange:       #f97316;
+      --orange-light: #fff0e6;
+      --orange-faint: #1f1510;
+      --text:         #f1f5f9;
+      --text-muted:   #8895a7;
+      --white:        #ffffff;
+      --font-head:    'Syne', sans-serif;
+      --font-body:    'DM Sans', sans-serif;
+      --radius:       12px;
+      --shadow:       0 4px 24px rgba(0,0,0,0.4);
+    }
+
+    /* ════════════════════════════════════════
+       RESET & BASE
+    ════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; }
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    a { color: var(--orange); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ════════════════════════════════════════
+       NAVBAR
+    ════════════════════════════════════════ */
+    .navbar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .navbar-brand {
+      display: flex; align-items: center; gap: 10px;
+      font-family: var(--font-head);
+      font-weight: 800; font-size: 1.3rem;
+      color: var(--text); text-decoration: none;
+    }
+    .brand-logo {
+      display: flex; align-items: center;
+    }
+    .brand-logo span:first-child { color: var(--orange); }
+    .brand-tag {
+      font-size: 0.7rem; font-weight: 500;
+      color: var(--text-muted); letter-spacing: 0.05em;
+      margin-left: 8px; padding-top: 2px;
+    }
+    .navbar-nav {
+      display: flex; align-items: center; gap: 4px;
+    }
+    .nav-link {
+      display: flex; align-items: center; gap: 6px;
+      padding: 7px 14px; border-radius: 8px;
+      font-size: 0.875rem; font-weight: 500;
+      color: var(--text-muted); text-decoration: none;
+      transition: all 0.2s;
+    }
+    .nav-link:hover { background: var(--surface2); color: var(--text); text-decoration: none; }
+    .nav-link.active {
+      background: var(--orange);
+      color: white;
+    }
+    .nav-link svg { width: 16px; height: 16px; }
+
+    /* ════════════════════════════════════════
+       LAYOUT
+    ════════════════════════════════════════ */
+    .main-content {
+      flex: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem;
+      width: 100%;
+    }
+
+    /* ════════════════════════════════════════
+       PAGE HEADER
+    ════════════════════════════════════════ */
+    .page-header { margin-bottom: 2rem; }
+    .page-header h1 {
+      font-family: var(--font-head);
+      font-size: 2rem; font-weight: 800;
+      color: var(--text); margin-bottom: 6px;
+    }
+    .page-header.centered { text-align: center; }
+    .subtitle { color: var(--text-muted); font-size: 0.95rem; }
+
+    /* ════════════════════════════════════════
+       FILTER CARD
+    ════════════════════════════════════════ */
+    .filter-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .search-row { margin-bottom: 1rem; }
+    .search-wrapper {
+      position: relative;
+    }
+    .search-icon {
+      position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+      width: 18px; height: 18px; color: var(--text-muted); pointer-events: none;
+    }
+    .search-input {
+      width: 100%; padding: 12px 16px 12px 44px;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 10px; color: var(--text); font-size: 0.95rem;
+      font-family: var(--font-body); outline: none; transition: border-color 0.2s;
+    }
+    .search-input:focus { border-color: var(--orange); }
+    .search-input::placeholder { color: var(--text-muted); }
+
+    .filters-row {
+      display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-end;
+    }
+    .filter-group { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 140px; }
+    .filter-group label { font-size: 0.8rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+    .filter-select {
+      padding: 9px 12px; background: var(--surface2);
+      border: 1px solid var(--border); border-radius: 8px;
+      color: var(--text); font-size: 0.875rem; font-family: var(--font-body);
+      outline: none; cursor: pointer; transition: border-color 0.2s;
+    }
+    .filter-select:focus { border-color: var(--orange); }
+
+    .btn-filter, .btn-clear {
+      padding: 9px 20px; border-radius: 8px; font-size: 0.875rem;
+      font-weight: 600; cursor: pointer; border: none; transition: all 0.2s;
+      align-self: flex-end; white-space: nowrap;
+    }
+    .btn-filter { background: var(--orange); color: white; }
+    .btn-filter:hover { background: #ea6c0a; }
+    .btn-clear { background: var(--surface2); color: var(--text-muted); border: 1px solid var(--border); text-decoration: none; display: inline-flex; align-items: center; }
+    .btn-clear:hover { color: var(--text); text-decoration: none; }
+
+    /* ════════════════════════════════════════
+       RESULTS COUNT
+    ════════════════════════════════════════ */
+    .results-header { margin-bottom: 1.25rem; }
+    .results-count { font-size: 0.875rem; color: var(--text-muted); }
+    .results-count strong { color: var(--text); }
+
+    /* ════════════════════════════════════════
+       RESOURCE GRID + CARDS
+    ════════════════════════════════════════ */
+    .resources-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.25rem;
+    }
+    .resource-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      display: flex; flex-direction: column;
+      transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+      overflow: hidden;
+    }
+    .resource-card:hover {
+      border-color: var(--orange);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+    }
+    .card-top { padding: 1.25rem; flex: 1; }
+    .card-badges { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+    .badge {
+      font-size: 0.72rem; font-weight: 700; padding: 3px 9px;
+      border-radius: 6px; text-transform: uppercase; letter-spacing: 0.04em;
+    }
+    .badge-level { background: var(--surface2); color: var(--orange); border: 1px solid var(--border); }
+    .badge-type  { background: var(--orange-light); color: var(--orange); }
+    .badge-verified { background: #e6f9f0; color: #16a34a; }
+
+    /* Type-specific badge colors */
+    .badge-type--exam    { background: #fef2f2; color: #dc2626; }
+    .badge-type--td      { background: #eff6ff; color: #2563eb; }
+    .badge-type--tp      { background: #f0fdf4; color: #16a34a; }
+    .badge-type--interro { background: #fdf4ff; color: #9333ea; }
+    .badge-type--cour    { background: var(--orange-light); color: var(--orange); }
+
+    .card-title {
+      font-family: var(--font-head); font-size: 1rem; font-weight: 700;
+      color: var(--text); margin-bottom: 12px; line-height: 1.4;
+    }
+    .card-meta {
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    .card-meta span {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 0.8rem; color: var(--text-muted);
+    }
+    .card-footer {
+      padding: 1rem 1.25rem;
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .download-count {
+      display: flex; align-items: center; gap: 5px;
+      font-size: 0.8rem; color: var(--text-muted);
+    }
+    .btn-download {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--orange); color: white;
+      padding: 8px 16px; border-radius: 8px;
+      font-size: 0.85rem; font-weight: 600;
+      text-decoration: none; transition: background 0.2s;
+    }
+    .btn-download:hover { background: #ea6c0a; text-decoration: none; color: white; }
+
+    /* ════════════════════════════════════════
+       EMPTY STATE
+    ════════════════════════════════════════ */
+    .empty-state {
+      text-align: center; padding: 4rem 2rem;
+      color: var(--text-muted);
+    }
+    .empty-state svg { margin-bottom: 1rem; color: var(--border); }
+    .empty-state h3 { font-family: var(--font-head); font-size: 1.2rem; color: var(--text); margin-bottom: 8px; }
+    .empty-state p  { font-size: 0.9rem; }
+
+    /* ════════════════════════════════════════
+       UPLOAD PAGE
+    ════════════════════════════════════════ */
+    .upload-page { max-width: 600px; margin: 0 auto; }
+    .upload-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+    }
+
+    /* ── Form Elements ── */
+    .form-group { margin-bottom: 1.25rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-label {
+      display: block; font-size: 0.8rem; font-weight: 600;
+      color: var(--text-muted); text-transform: uppercase;
+      letter-spacing: 0.05em; margin-bottom: 6px;
+    }
+    .required { color: var(--orange); }
+    .form-input, .form-select {
+      width: 100%; padding: 10px 14px;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 8px; color: var(--text);
+      font-size: 0.9rem; font-family: var(--font-body);
+      outline: none; transition: border-color 0.2s;
+    }
+    .form-input:focus, .form-select:focus { border-color: var(--orange); }
+    .form-input::placeholder { color: var(--text-muted); }
+    .form-select:disabled { opacity: 0.5; cursor: not-allowed; }
+    .form-hint { font-size: 0.78rem; color: var(--text-muted); margin-top: 4px; display: block; }
+    .form-error { font-size: 0.8rem; color: #ef4444; margin-top: 4px; display: block; }
+
+    /* ── Buttons ── */
+    .btn-primary, .btn-secondary {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 10px 22px; border-radius: 8px;
+      font-size: 0.9rem; font-weight: 600; cursor: pointer;
+      border: none; transition: all 0.2s; font-family: var(--font-body);
+    }
+    .btn-primary  { background: var(--orange); color: white; }
+    .btn-primary:hover { background: #ea6c0a; }
+    .btn-secondary { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+    .btn-secondary:hover { border-color: var(--orange); color: var(--orange); }
+
+    /* ── Alerts ── */
+    .alert {
+      padding: 12px 16px; border-radius: 8px;
+      margin-bottom: 1.25rem; font-size: 0.875rem;
+    }
+    .alert--success { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; }
+    .alert--error   { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+
+    .step-counter { font-size: 0.8rem; color: var(--text-muted); }
+
+    /* ════════════════════════════════════════
+       FOOTER
+    ════════════════════════════════════════ */
+    .footer {
+      text-align: center; padding: 1.5rem;
+      font-size: 0.8rem; color: var(--text-muted);
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Navbar ── -->
+  <nav class="navbar">
+    <a href="/" class="navbar-brand">
+      <span class="brand-logo">
+        <span>ES</span><span style="color:var(--orange)">Ti</span><span>N</span>
+      </span>
+      <span class="brand-tag">Resource Hub</span>
+    </a>
+    <div class="navbar-nav">
+      <a href="/" class="nav-link {% block nav_home %}{% endblock %}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+        Home
+      </a>
+      <a href="{% url 'resources:upload' %}" class="nav-link {% block nav_upload %}{% endblock %}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+        </svg>
+        Upload
+      </a>
+      <a href="{% url 'resources:resource_list' %}" class="nav-link {% block nav_resources %}{% endblock %}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+        </svg>
+        Resources
+      </a>
+      <a href="#" class="nav-link {% block nav_leaderboard %}{% endblock %}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+        Leaderboard
+      </a>
+    </div>
+  </nav>
+
+  <!-- ── Main ── -->
+  <main class="main-content">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- ── Footer ── -->
+  <footer class="footer">
+    © 2026 ESTIN Student Resource Hub. Empowering students through shared knowledge.
+  </footer>
+
+</body>
+</html>

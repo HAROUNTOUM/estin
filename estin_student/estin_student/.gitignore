@@ -1,0 +1,9 @@
+# Secret Credentials
+secrets/
+*.json
+
+# Local Environment
+.estin
+__pycache__/
+db.sqlite3
+media/
